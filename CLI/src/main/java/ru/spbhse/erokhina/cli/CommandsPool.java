@@ -10,7 +10,7 @@ import java.util.Map;
  */
 class CommandsPool {
     private final Map<String, CommandExecutor> commands = new HashMap<>();
-    private ExternalCommandExecutor externalCommandExecutor = new ExternalCommandExecutor();
+    private final ExternalCommandExecutor externalCommandExecutor = new ExternalCommandExecutor();
 
     {
         commands.put("cat", new CatCommandExecutor());

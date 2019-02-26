@@ -65,10 +65,8 @@ public class ParserImpl implements Parser {
 
                     growingStrBuilder.append(String.valueOf(curSymbol));
 
-                    if (!growingStrBuilder.toString().isEmpty()) {
-                        resList.add(growingStrBuilder.toString());
-                        growingStrBuilder = new StringBuilder();
-                    }
+                    resList.add(growingStrBuilder.toString());
+                    growingStrBuilder = new StringBuilder();
 
                     curPos = i + 1;
                     break;
@@ -144,15 +142,13 @@ public class ParserImpl implements Parser {
             char curSymbol = str.charAt(curPos);
 
             if (curSymbol == DOLLAR_SYMBOL) {
-                StringBuilder var = new StringBuilder();
-
                 int i = curPos + 1;
-                while (i < n && str.charAt(i) != SPACE_SYMBOL) {
-                    var.append(str.charAt(i));
+                while (i < n && str.charAt(i) != SPACE_SYMBOL && str.charAt(i) != DOLLAR_SYMBOL &&
+                        str.charAt(i) != DOUBLE_QUOTE && str.charAt(i) != SINGLE_QUOTE) {
                     i++;
                 }
 
-                String value = environment.getOrDefault(var.toString(), "");
+                String value = environment.getOrDefault(str.substring(curPos + 1, i), "");
 
                 resStr.append(value);
 

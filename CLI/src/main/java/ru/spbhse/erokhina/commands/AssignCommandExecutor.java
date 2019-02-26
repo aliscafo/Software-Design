@@ -2,7 +2,6 @@ package ru.spbhse.erokhina.commands;
 
 import ru.spbhse.erokhina.Environment;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -18,7 +17,7 @@ public class AssignCommandExecutor implements CommandExecutor {
                 throw new RuntimeException("Too few parameters for `=` command");
             case 2:
                 environment.put(args.get(0), args.get(1));
-                environment.setPrevCommandOutputLines(new ArrayList<>());
+                environment.setPrevCommandOutput("");
                 break;
             default:
                 throw new RuntimeException("Unexpected symbols: " + args.get(2));

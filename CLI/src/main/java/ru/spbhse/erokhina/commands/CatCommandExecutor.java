@@ -4,7 +4,9 @@ import ru.spbhse.erokhina.Environment;
 
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -14,9 +16,20 @@ public class CatCommandExecutor implements CommandExecutor {
     @Override
     public void execute(List<String> args, Environment environment) throws IOException {
         if (args.isEmpty()) {
-            environment.setPrevCommandOutputLines(environment.getPrevCommandOutputLines());
+            environment.setPrevCommandOutput(environment.getPrevCommandOutput());
         } else {
-            environment.setPrevCommandOutputLines(Files.readAllLines(Paths.get(args.get(0))));
+            StringBuilder res = new StringBuilder();
+            for (String arg : args) {
+                Path path = Paths.get(arg);
+                try {
+                    byte[] bytes = Files.readAllBytes(path);
+                    res.append(new String(bytes));
+                } catch (IOException e) {
+                    throw new IOException("cannot read from file or file doesn't exist: " + arg);
+                }
+            }
+
+            environment.setPrevCommandOutput(res.toString());
         }
     }
 }

@@ -23,13 +23,12 @@ public class ExternalCommandExecutor implements CommandExecutor {
 
     @Override
     public void execute(List<String> args, Environment environment) throws IOException {
-        StringBuilder command = new StringBuilder(commandName);
+        List<String> commandAndArgs = new ArrayList<>();
+        commandAndArgs.add(commandName);
+        commandAndArgs.addAll(args);
 
-        for (String arg : args) {
-            command.append(" ").append(arg);
-        }
 
-        ProcessBuilder processBuilder = new ProcessBuilder(command.toString())
+        ProcessBuilder processBuilder = new ProcessBuilder(commandAndArgs)
                 .directory(new File(System.getProperty("user.dir")));
 
         Process process = processBuilder.start();
@@ -40,8 +39,11 @@ public class ExternalCommandExecutor implements CommandExecutor {
         }
 
         List<String> output = getOutput(process.getInputStream());
+        List<String> errors = getOutput(process.getErrorStream());
 
-        environment.setPrevCommandOutputLines(output);
+        output.addAll(errors);
+
+        environment.setPrevCommandOutput(String.join("\n", output));
     }
 
     private static List<String> getOutput(InputStream inputStream) throws IOException {

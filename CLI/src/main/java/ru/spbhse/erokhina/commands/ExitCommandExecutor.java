@@ -2,7 +2,6 @@ package ru.spbhse.erokhina.commands;
 
 import ru.spbhse.erokhina.Environment;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -11,7 +10,7 @@ import java.util.List;
 public class ExitCommandExecutor implements CommandExecutor {
     @Override
     public void execute(List<String> args, Environment environment) {
-        environment.setPrevCommandOutputLines(new ArrayList<>());
+        environment.setPrevCommandOutput("");
         environment.setExitFlag(true);
     }
 }

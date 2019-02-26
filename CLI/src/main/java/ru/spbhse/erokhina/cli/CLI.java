@@ -13,15 +13,15 @@ public class CLI {
     private final CommandsPool commandsPool = new CommandsPool();
     private final Environment environment = new Environment();
     private final Parser parser = new ParserImpl();
-    private Scanner scanner = new Scanner(System.in);
+    private final Scanner scanner = new Scanner(System.in);
 
     /**
      * Method for running CLI. Reads user commands, parses and executes them.
      */
     public void run() {
-        boolean exitFlag = false;
 
-        while (!exitFlag) {
+        loop:
+        while (true) {
             environment.resetForNewCommand();
 
             String curLine = scanner.nextLine();
@@ -41,19 +41,18 @@ public class CLI {
                 try {
                     commandExecutor.execute(parsedCommand.getArgs(), environment);
                 } catch (Exception e) {
-                    System.out.println("Error during execution : " + e.getMessage());
-                    break;
+                    System.out.println("Error during execution: " + e.getMessage());
+                    continue;
                 }
 
                 if (environment.getExitFlag()) {
-                    exitFlag = true;
-                    break;
+                    break loop;
                 }
             }
 
-            for (String line : environment.getPrevCommandOutputLines()) {
-                System.out.println(line);
-            }
+            System.out.print(environment.getPrevCommandOutput());
         }
+
+        scanner.close();
     }
 }

@@ -26,7 +26,7 @@ public class CommandsTest {
 
         executor.execute(args, environment);
 
-        assertEquals(Collections.singletonList("first arg second arg"), environment.getPrevCommandOutputLines());
+        assertEquals("first arg second arg", environment.getPrevCommandOutput());
         assertFalse(environment.getExitFlag());
     }
 
@@ -35,12 +35,12 @@ public class CommandsTest {
         CommandExecutor executor = new EchoCommandExecutor();
         Environment environment = new Environment();
 
-        List<String> output = Arrays.asList("first arg", "second arg");
-        environment.setPrevCommandOutputLines(output);
+        String output = "first arg\nsecond arg";
+        environment.setPrevCommandOutput(output);
 
         executor.execute(new ArrayList<>(), environment);
 
-        assertEquals(output, environment.getPrevCommandOutputLines());
+        assertEquals(output, environment.getPrevCommandOutput());
         assertFalse(environment.getExitFlag());
     }
 
@@ -51,8 +51,8 @@ public class CommandsTest {
 
         executor.execute(Collections.singletonList("src/test/resources/test_file.txt"), environment);
 
-        assertEquals(Arrays.asList("Twinkle twinkle little star", "How I wonder what you are"),
-                environment.getPrevCommandOutputLines());
+        assertEquals("Twinkle twinkle little star\nHow I wonder what you are",
+                environment.getPrevCommandOutput());
         assertFalse(environment.getExitFlag());
     }
 
@@ -61,12 +61,12 @@ public class CommandsTest {
         CommandExecutor executor = new CatCommandExecutor();
         Environment environment = new Environment();
 
-        List<String> output = Arrays.asList("first line", "second line");
-        environment.setPrevCommandOutputLines(output);
+        String output = "first line\nsecond line";
+        environment.setPrevCommandOutput(output);
 
         executor.execute(new ArrayList<>(), environment);
 
-        assertEquals(output, environment.getPrevCommandOutputLines());
+        assertEquals(output, environment.getPrevCommandOutput());
         assertFalse(environment.getExitFlag());
     }
 
@@ -85,12 +85,12 @@ public class CommandsTest {
         CommandExecutor executor = new WcCommandExecutor();
         Environment environment = new Environment();
 
-        List<String> output = Arrays.asList("word word", "word", "  word  ", "word");
-        environment.setPrevCommandOutputLines(output);
+        String output = "word word\nword\n  word  \nword";
+        environment.setPrevCommandOutput(output);
 
         executor.execute(new ArrayList<>(), environment);
 
-        assertEquals(Collections.singletonList("4 5 25"), environment.getPrevCommandOutputLines());
+        assertEquals("4 5 28", environment.getPrevCommandOutput());
         assertFalse(environment.getExitFlag());
     }
 
@@ -102,7 +102,7 @@ public class CommandsTest {
         executor.execute(Arrays.asList("a", "50"), environment);
 
         assertEquals("50", environment.getOrDefault("a", ""));
-        assertEquals(new ArrayList<>(), environment.getPrevCommandOutputLines());
+        assertEquals("", environment.getPrevCommandOutput());
         assertFalse(environment.getExitFlag());
     }
 }
