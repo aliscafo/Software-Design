@@ -43,7 +43,7 @@ public class ExternalCommandExecutor implements CommandExecutor {
 
         output.addAll(errors);
 
-        environment.setPrevCommandOutput(String.join("\n", output));
+        environment.setPrevCommandOutput(String.join(System.lineSeparator(), output));
     }
 
     private static List<String> getOutput(InputStream inputStream) throws IOException {

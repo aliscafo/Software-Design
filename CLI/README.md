@@ -1,6 +1,6 @@
 # Software-Design
 
-	java -jar build/libs/CLI-1.0-SNAPSHOT.jar 
+	java -jar CLI-1.0-SNAPSHOT.jar 
 
 ![](CLI_diagram.png)
 

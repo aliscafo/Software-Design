@@ -21,7 +21,9 @@ public class ParserImpl implements Parser {
 
         List<String> strAfterSecondaryParsing = secondaryParsing(strAfterPrimaryParsing, environment);
 
-        return toParsedCommands(strAfterSecondaryParsing);
+        List<String> strAfterMerging = mergeIfNotSpaceBetween(strAfterSecondaryParsing);
+
+        return toParsedCommands(strAfterMerging);
     }
 
     private List<String> primaryParsing(String str) {
@@ -105,6 +107,7 @@ public class ParserImpl implements Parser {
             String curStr = list.get(curPos);
 
             if (curStr.isEmpty() || curStr.equals(String.valueOf(SPACE_SYMBOL))) {
+                resList.add(curStr);
                 curPos++;
                 continue;
             }
@@ -199,6 +202,39 @@ public class ParserImpl implements Parser {
             }
 
             curPos++;
+        }
+
+        return resList;
+    }
+
+    private List<String> mergeIfNotSpaceBetween(List<String> list) {
+        List<String> resList = new ArrayList<>();
+
+        int curPos = 0;
+        int n = list.size();
+
+        while (curPos < n) {
+            if (list.get(curPos).equals(String.valueOf(PIPELINE_SYMBOL))) {
+                resList.add(list.get(curPos));
+                curPos++;
+                continue;
+            }
+
+            if (list.get(curPos).equals(String.valueOf(SPACE_SYMBOL))) {
+                curPos++;
+                continue;
+            }
+
+            int start = curPos;
+
+            while (curPos < n && !list.get(curPos).equals(String.valueOf(PIPELINE_SYMBOL))
+                              && !list.get(curPos).equals(String.valueOf(SPACE_SYMBOL))) {
+                curPos++;
+            }
+
+            String res = String.join("", list.subList(start, curPos));
+
+            resList.add(res);
         }
 
         return resList;

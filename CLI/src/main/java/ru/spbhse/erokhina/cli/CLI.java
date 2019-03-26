@@ -50,7 +50,7 @@ public class CLI {
                 }
             }
 
-            System.out.print(environment.getPrevCommandOutput());
+            System.out.println(environment.getPrevCommandOutput());
         }
 
         scanner.close();
